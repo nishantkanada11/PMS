@@ -38,14 +38,14 @@ class User
         return $stmt->execute();
     }
 
-    public function saveProduct($id, $name, $description, $price, $profile_picture, $mdescription)
+    public function saveProduct($id, $name, $description, $price, $profile_picture, $mdescription, $brand_name, $brand_logo)
     {
         if ($id) {
-            $stmt = $this->conn->prepare("UPDATE product SET name = ?, description = ?, price = ?, img = ?, mdescription = ? WHERE id = ?");
-            $stmt->bind_param("sssssi", $name, $description, $price, $profile_picture, $mdescription, $id);
+            $stmt = $this->conn->prepare("UPDATE product SET name = ?, description = ?, price = ?, img = ?, mdescription = ?, brand_name = ?, brand_logo = ? WHERE id = ?");
+            $stmt->bind_param("sssssssi", $name, $description, $price, $profile_picture, $mdescription, $brand_name, $brand_logo, $id);
         } else {
-            $stmt = $this->conn->prepare("INSERT INTO product (name, description, price, img, mdescription) VALUES (?, ?, ?, ?, ?)");
-            $stmt->bind_param("sssss", $name, $description, $price, $profile_picture, $mdescription);
+            $stmt = $this->conn->prepare("INSERT INTO product (name, description, price, img, mdescription, brand_name, brand_logo) VALUES (?, ?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("sssssss", $name, $description, $price, $profile_picture, $mdescription, $brand_name, $brand_logo);
         }
         return $stmt->execute();
     }
@@ -70,23 +70,43 @@ class User
 
     public function deleteProduct($id)
     {
-        // First, get image file name to remove from uploads folder
-        $stmt = $this->conn->prepare("SELECT img FROM product WHERE id = ?");
+        if (!$this->conn) {
+            die("Database connection failed.");
+        }
+
+        $stmt = $this->conn->prepare("SELECT img, brand_logo FROM product WHERE id = ?");
+        if (!$stmt) {
+            die("SQL Prepare Error (SELECT): " . $this->conn->error);
+        }
+
         $stmt->bind_param("i", $id);
         $stmt->execute();
         $result = $stmt->get_result();
         $product = $result->fetch_assoc();
 
         if ($product && !empty($product['img'])) {
-            $filePath = __DIR__ . '/../../public/uploads/' . $product['img'];
-            if (file_exists($filePath)) {
-                unlink($filePath); // Delete the image file
+            $imgPath = __DIR__ . '/../../public/uploads/' . $product['img'];
+            if (file_exists($imgPath)) {
+                unlink($imgPath);
             }
         }
+
+        if ($product && !empty($product['brand_logo'])) {
+            $logoPath = __DIR__ . '/../../public/uploads/' . $product['brand_logo'];
+            if (file_exists($logoPath)) {
+                unlink($logoPath);
+            }
+        }
+
         $stmt = $this->conn->prepare("DELETE FROM product WHERE id = ?");
+        if (!$stmt) {
+            die("SQL Prepare Error (DELETE): " . $this->conn->error);
+        }
+
         $stmt->bind_param("i", $id);
         return $stmt->execute();
     }
+
 
 
     public function getActiveProducts()
@@ -123,18 +143,35 @@ class User
         return $result->fetch_assoc();
     }
 
-    public function search($keyword)
+    public function searchProducts($query, $brand = '')
     {
-        $keyword = "%" . $keyword . "%";
-        $stmt = $this->conn->prepare("
-            SELECT * FROM product 
-            WHERE CONCAT(id,name, description, price, mdescription) LIKE ?
-            ORDER BY id DESC
-        ");
-        $stmt->bind_param("s", $keyword);
-        $stmt->execute();
-        $res = $stmt->get_result();
-        return $res->fetch_all(MYSQLI_ASSOC);
-    }
+        $sql = "SELECT * FROM product WHERE (name LIKE ? OR description LIKE ? OR mdescription LIKE ?)";
 
+        $params = ["%$query%", "%$query%", "%$query%"];
+        $types = "sss";
+
+        if (!empty($brand)) {
+            $sql .= " AND brand_name = ?";
+            $params[] = $brand;
+            $types .= "s";
+        }
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param($types, ...$params);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
+    public function getAllBrandNames()
+    {
+        $sql = "SELECT DISTINCT brand_name FROM product WHERE brand_name IS NOT NULL AND brand_name <> '' ORDER BY brand_name ASC";
+        $result = $this->conn->query($sql);
+
+        $brands = [];
+        if ($result && $result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $brands[] = $row['brand_name'];
+            }
+        }
+        return $brands;
+    }
 }

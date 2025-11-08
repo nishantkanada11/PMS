@@ -42,6 +42,7 @@ class UserController
     {
 
         $products = $this->userModel->getAllProducts();
+        $brands = $this->userModel->getAllBrandNames();
         require __DIR__ . '/../views/admin/index.php';
     }
 
@@ -72,7 +73,6 @@ class UserController
             echo "<script>alert('Failed to update profile.');window.location='index.php?controller=User&action=adit';</script>";
         }
     }
-
     public function saveProduct()
     {
         $id = $_POST['id'] ?? null;
@@ -80,53 +80,50 @@ class UserController
         $description = trim($_POST['description'] ?? '');
         $price = trim($_POST['price'] ?? '');
         $mdescription = trim($_POST['mdescription'] ?? '');
+        $brand_name = trim($_POST['brand_name'] ?? '');
 
-        if (empty($name) || empty($description) || empty($price) || empty($mdescription)) {
+        if (empty($name) || empty($description) || empty($price) || empty($mdescription) || empty($brand_name)) {
             echo "<script>alert('All fields are required.'); window.history.back();</script>";
             return;
         }
 
-        $profilePicName = null;
         $targetDir = __DIR__ . '/../../public/uploads/';
-
-        if (!is_dir($targetDir)) {
+        if (!is_dir($targetDir))
             mkdir($targetDir, 0777, true);
-        }
+
+        $profilePicName = null;
+        $brandLogoName = null;
 
         if (!empty($_FILES['profile_picture']['name'])) {
             $fileTmp = $_FILES['profile_picture']['tmp_name'];
             $fileName = basename($_FILES['profile_picture']['name']);
             $ext = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
-            $allowedExts = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
-
-            if (!in_array($ext, $allowedExts)) {
-                echo "<script>alert('Invalid file type. Only JPG, PNG, GIF, or WEBP allowed.'); window.history.back();</script>";
-                return;
-            }
-
             $profilePicName = 'product_' . time() . '.' . $ext;
+            move_uploaded_file($fileTmp, $targetDir . $profilePicName);
+        }
 
-            if (!move_uploaded_file($fileTmp, $targetDir . $profilePicName)) {
-                echo "<script>alert('Failed to upload image.'); window.history.back();</script>";
-                return;
-            }
+        if (!empty($_FILES['brand_logo']['name'])) {
+            $fileTmp = $_FILES['brand_logo']['tmp_name'];
+            $fileName = basename($_FILES['brand_logo']['name']);
+            $ext = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+            $brandLogoName = 'brand_' . time() . '.' . $ext;
+            move_uploaded_file($fileTmp, $targetDir . $brandLogoName);
         }
 
         if ($id) {
-            // If editing and no new image uploaded, keep the old one
-            if (empty($profilePicName)) {
-                $oldProduct = $this->userModel->getProductById($id);
+            $oldProduct = $this->userModel->getProductById($id);
+            if (empty($profilePicName))
                 $profilePicName = $oldProduct['img'] ?? null;
-            }
-
-            $this->userModel->saveProduct($id, $name, $description, $price, $profilePicName, $mdescription);
-        } else {
-            $this->userModel->saveProduct(null, $name, $description, $price, $profilePicName, $mdescription);
+            if (empty($brandLogoName))
+                $brandLogoName = $oldProduct['brand_logo'] ?? null;
         }
+
+        $this->userModel->saveProduct($id, $name, $description, $price, $profilePicName, $mdescription, $brand_name, $brandLogoName);
 
         header("Location: index.php?controller=User&action=aindex");
         exit;
     }
+
 
 
 
@@ -169,6 +166,7 @@ class UserController
     }
     public function showActiveProducts()
     {
+        $brands = $this->userModel->getAllBrandNames();
         $products = $this->userModel->getActiveProducts();
         require __DIR__ . '/../views/users/index.php';
     }
@@ -211,9 +209,13 @@ class UserController
     public function search()
     {
         $query = $_GET['query'] ?? '';
-        $results = $this->userModel->search($query);
-        echo json_encode($results);
+        $brand = $_GET['brand'] ?? '';
+
+        $products = $this->userModel->searchProducts($query, $brand);
+        echo json_encode($products);
+
     }
+
     public function logout()
     {
 
