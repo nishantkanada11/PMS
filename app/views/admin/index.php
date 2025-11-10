@@ -75,6 +75,31 @@
         <p>No products found.</p>
     <?php endif; ?>
 </div>
+<?php
+$page = isset($page) ? (int) $page : 1;
+$totalPage = isset($totalPage) ? (int) $totalPage : 1;
+$limit = isset($limit) ? (int) $limit : 6;
+?>
+<div style="text-align:center; margin:20px;">
+    <?php if ($totalPage > 1): ?>
+        <?php if ($page > 1): ?>
+            <a href="index.php?controller=User&action=aindex&page=<?php echo $page - 1; ?>"
+                class="btn btn-secondary">Previous</a>
+        <?php endif; ?>
+
+        <?php for ($i = 1; $i <= $totalPage; $i++): ?>
+            <a href="index.php?controller=User&action=aindex&page=<?php echo $i; ?>"
+                class="btn <?php echo $i == $page ? 'btn-primary' : 'btn-light'; ?>">
+                <?php echo $i; ?>
+            </a>
+        <?php endfor; ?>
+
+        <?php if ($page < $totalPage): ?>
+            <a href="index.php?controller=User&action=aindex&page=<?php echo $page + 1; ?>" class="btn btn-secondary">Next</a>
+        <?php endif; ?>
+    <?php endif; ?>
+</div>
+
 
 <script>
     function updateStatus(id, status) {

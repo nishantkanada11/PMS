@@ -40,8 +40,15 @@ class UserController
 
     public function aindex()
     {
+        $limit = 6;
+        $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+        $offset = ($page - 1) * $limit;
 
-        $products = $this->userModel->getAllProducts();
+        $products = $this->userModel->aGetPage($limit, $offset);
+        $totalRecord = $this->userModel->getTotalCount();
+        $totalPage = ceil($totalRecord / $limit);
+
+        // $products = $this->userModel->getAllProducts();
         $brands = $this->userModel->getAllBrandNames();
         require __DIR__ . '/../views/admin/index.php';
     }
@@ -166,8 +173,16 @@ class UserController
     }
     public function showActiveProducts()
     {
+        $limit = 6;
+        $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
+        $offset = ($page - 1) * $limit;
+
+        $products = $this->userModel->getPage($limit, $offset);
+        $totalRecord = $this->userModel->getTotalCount();
+        $totalPage = ceil($totalRecord / $limit);
+        
         $brands = $this->userModel->getAllBrandNames();
-        $products = $this->userModel->getActiveProducts();
+
         require __DIR__ . '/../views/users/index.php';
     }
 

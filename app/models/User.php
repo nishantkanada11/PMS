@@ -51,23 +51,6 @@ class User
     }
 
 
-    public function getAllProducts()
-    {
-        $query = "SELECT * FROM product ORDER BY id DESC";
-        $result = $this->conn->query($query);
-
-        if (!$result) {
-            die("Query failed: " . $this->conn->error);
-        }
-
-        $products = [];
-        while ($row = $result->fetch_assoc()) {
-            $products[] = $row;
-        }
-
-        return $products;
-    }
-
     public function deleteProduct($id)
     {
         if (!$this->conn) {
@@ -105,22 +88,6 @@ class User
 
         $stmt->bind_param("i", $id);
         return $stmt->execute();
-    }
-
-
-
-    public function getActiveProducts()
-    {
-        $sql = "SELECT * FROM product WHERE status = 'active' ORDER BY id DESC";
-        $result = $this->conn->query($sql);
-
-        $products = [];
-        if ($result && $result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                $products[] = $row;
-            }
-        }
-        return $products;
     }
 
     public function updateProductStatus($id, $status)
@@ -173,5 +140,29 @@ class User
             }
         }
         return $brands;
+    }
+
+    public function getPage($limit, $offset)
+    {
+        $sql = "SELECT * FROM product WHERE status = 'active' LIMIT ? OFFSET ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("ii", $limit, $offset);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
+    public function aGetPage($limit, $offset)
+    {
+        $sql = "SELECT * FROM product LIMIT ? OFFSET ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("ii", $limit, $offset);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function getTotalCount()
+    {
+        $sql = "SELECT COUNT(*) AS total FROM product WHERE status = 'active'";
+        $result = $this->conn->query($sql);
+        return $result->fetch_assoc()['total'];
     }
 }
