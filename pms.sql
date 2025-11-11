@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 08, 2025 at 01:44 PM
+-- Generation Time: Nov 11, 2025 at 07:31 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -44,14 +44,8 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`id`, `name`, `description`, `price`, `img`, `status`, `mdescription`, `brand_logo`, `brand_name`) VALUES
-(26, 'hi', 'hell', 2147483647, 'product_1762500103.png', 'active', 'mkmklllllllmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm', '', ''),
-(28, 'mkmklklk', 'mmmmmmm', 983953987, 'product_1762509392.png', 'active', 'sdfkkk', '', ''),
-(29, 'sdfgdfsdfcasaf', 'oiscdscsdc', 453647, 'product_1762510591.png', 'active', 'ldfsadksdfksdf', '', ''),
-(30, 'jncscsjd', 'sadjnasdjasdj', 2147, 'product_1762510846.png', 'active', 'jsdaan', '', ''),
-(31, 'n', 'lmmmmmmmmmmmmmmmmmmmmmmmmmknnn', 909099, 'product_1762520602.jpg', 'inactive', 'knnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn', '', 'kkkkk'),
-(32, 'Admin', 'jsdjsdcjscsdd', 9889, 'product_1762522862.jpg', 'active', 'okokoko', '', ''),
-(38, 'Nishant Kanada', 'iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii', 2147483647, 'product_1762603033.png', 'active', 'oooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo', 'brand_1762603033.png', 'nnnnnnnnnnnnn'),
-(39, 'car', 'carrrrrrrrrrrr', 200000, 'product_1762605586.jpg', 'active', 'fasttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt', 'brand_1762605586.png', 'BMW');
+(62, 'kanada', 'sdisaisaodasdoiqwwwq', 43343, 'Capture1.PNG', 'active', 'qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq', '3.jpg', 'hiiiiiiiiii'),
+(63, 'kanada', 'sdisaisaodasdoiqwwwq', 43343, 'Capture1.PNG', 'active', 'qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq', '3.jpg', 'hiiiiiiiiii');
 
 -- --------------------------------------------------------
 
@@ -91,7 +85,7 @@ ALTER TABLE `product`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
