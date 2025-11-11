@@ -90,6 +90,25 @@ class User
         return $stmt->execute();
     }
 
+    public function searchProducts($query, $brand = '')
+    {
+        $sql = "SELECT * FROM product WHERE (name LIKE ? OR description LIKE ? OR mdescription LIKE ?)";
+
+        $params = ["%$query%", "%$query%", "%$query%"];
+        $types = "sss";
+
+        if (!empty($brand)) {
+            $sql .= " AND brand_name = ?";
+            $params[] = $brand;
+            $types .= "s";
+        }
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param($types, ...$params);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
+
     public function updateProductStatus($id, $status)
     {
         $sql = "UPDATE product SET status = ? WHERE id = ?";
@@ -110,24 +129,6 @@ class User
         return $result->fetch_assoc();
     }
 
-    public function searchProducts($query, $brand = '')
-    {
-        $sql = "SELECT * FROM product WHERE (name LIKE ? OR description LIKE ? OR mdescription LIKE ?)";
-
-        $params = ["%$query%", "%$query%", "%$query%"];
-        $types = "sss";
-
-        if (!empty($brand)) {
-            $sql .= " AND brand_name = ?";
-            $params[] = $brand;
-            $types .= "s";
-        }
-
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param($types, ...$params);
-        $stmt->execute();
-        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-    }
     public function getAllBrandNames()
     {
         $sql = "SELECT DISTINCT brand_name FROM product WHERE brand_name IS NOT NULL AND brand_name <> '' ORDER BY brand_name ASC";

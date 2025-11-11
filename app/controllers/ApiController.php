@@ -37,7 +37,7 @@ class ApiController
             return;
         }
 
-        $id = $_GET['id'] ?? null; 
+        $id = $_GET['id'] ?? null;
 
         //for new producr validation
         if (!$id && (empty($input['name']) || empty($input['description']) || empty($input['price']))) {
@@ -81,5 +81,19 @@ class ApiController
         }
         $deleted = $this->userModel->deleteProduct($id);
         echo json_encode($deleted ? ["status" => "success", "message" => "Deleted"] : ["status" => "error", "message" => "Delete failed"]);
+    }
+
+    public function search()
+    {
+        $query = $_GET['query'] ?? '';
+        $brand = $_GET['brand'] ?? '';
+
+        $products = $this->userModel->searchProducts($query, $brand);
+        if ($products) {
+            echo json_encode(["status" => "success", "message" => "search found"]);
+        } else {
+            echo json_encode(["status" => "failed", "message" => "search not  found"]);
+        }
+
     }
 }
