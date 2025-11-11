@@ -152,7 +152,7 @@ class User
     }
     public function aGetPage($limit, $offset)
     {
-        $sql = "SELECT * FROM product LIMIT ? OFFSET ?";
+        $sql = "SELECT * FROM product ORDER BY id DESC LIMIT ? OFFSET ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("ii", $limit, $offset);
         $stmt->execute();
