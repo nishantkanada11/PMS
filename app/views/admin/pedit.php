@@ -3,11 +3,12 @@
 <h2 style="margin-left:100px">Edit Product</h2>
 
 <nav style="display: flex; justify-content: right; align-items: center; gap: 10px;">
-    <a href="index.php?controller=User&action=logout" class="login-btn">Log Out</a>
-    <a href="index.php?controller=User&action=aindex" class="btn btn-secondary">Back</a>
+    <a href="/PMS/user/logout" class="login-btn">Log Out</a>
+
+    <a href="/PMS/user/aindex" class="btn btn-secondary">Back</a>
 </nav>
 
-<form method="POST" action="index.php?controller=User&action=saveProduct" enctype="multipart/form-data">
+<form method="POST" action="/PMS/user/saveProduct" enctype="multipart/form-data">
     <input type="hidden" name="id" value="<?php echo $product['id']; ?>">
 
     <div class="form-group">
@@ -43,8 +44,8 @@
     <div class="form-group">
         <label>Current Brand Logo:</label><br>
         <?php if (!empty($product['brand_logo'])): ?>
-            <img src="public/uploads/<?php echo htmlspecialchars($product['brand_logo']); ?>" alt="Brand Logo" width="100"
-                style="margin-bottom:10px; object-fit:contain;">
+            <img src="/PMS/public/uploads/<?php echo htmlspecialchars($product['brand_logo']); ?>" alt="Brand Logo"
+                width="100" style="margin-bottom:10px; object-fit:contain;">
         <?php else: ?>
             <p>No brand logo uploaded.</p>
         <?php endif; ?>
@@ -58,7 +59,7 @@
     <div class="form-group">
         <label>Current Product Image:</label><br>
         <?php if (!empty($product['img'])): ?>
-            <img src="public/uploads/<?php echo htmlspecialchars($product['img']); ?>" alt="Product Image" width="120"
+            <img src="/PMS/public/uploads/<?php echo htmlspecialchars($product['img']); ?>" alt="Product Image" width="120"
                 style="margin-bottom:10px; object-fit:cover;">
         <?php else: ?>
             <p>No product image uploaded.</p>

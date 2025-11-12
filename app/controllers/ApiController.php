@@ -59,10 +59,7 @@ class ApiController
         if ($result) {
             if ($id) {
                 $updatedProduct = $this->userModel->getProductById($id);
-                echo json_encode([
-                    "status" => "success",
-                    "message" => "Product updated successfully",
-                    "data" => $updatedProduct
+                echo json_encode(["status" => "success","message" => "Product updated successfully","data" => $updatedProduct
                 ]);
             } else {
                 echo json_encode(["status" => "success", "message" => "Product created successfully"]);
@@ -85,12 +82,12 @@ class ApiController
 
     public function search()
     {
-        $query = $_GET['query'] ?? '';
+        $query = $_GET['id'] ?? $_GET['query'] ?? '';
         $brand = $_GET['brand'] ?? '';
 
         $products = $this->userModel->searchProducts($query, $brand);
         if ($products) {
-            echo json_encode(["status" => "success", "message" => "search found"]);
+            echo json_encode(["status" => "success", "message" => "search found", $products]);
         } else {
             echo json_encode(["status" => "failed", "message" => "search not  found"]);
         }

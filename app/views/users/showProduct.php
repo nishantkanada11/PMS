@@ -3,7 +3,7 @@
 <div
     style="max-width: 800px; margin: 40px auto; background: #fff; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); padding: 20px;">
     <div style="text-align: center;">
-        <img src="public/uploads/<?php echo htmlspecialchars($product['img']); ?>"
+        <img src="/PMS/public/uploads/<?php echo htmlspecialchars($product['img']); ?>"
             alt="<?php echo htmlspecialchars($product['name']); ?>"
             style="width:100%; height:250px; object-fit:contain; background-color:#f4f7fb; border-radius: 8px;">
     </div>
@@ -13,8 +13,7 @@
             <?php echo htmlspecialchars($product['name']); ?>
         </h2>
 
-
-        <img src="public/uploads/<?php echo htmlspecialchars($product['brand_logo']); ?>"
+        <img src="/PMS/public/uploads/<?php echo htmlspecialchars($product['brand_logo']); ?>"
             alt="<?php echo htmlspecialchars($product['brand_name']); ?> Logo"
             style="width: 60px; height: 60px; object-fit: contain; border-radius: 8px; background: #f9f9f9; padding: 5px;">
         <p style="margin: 0; font-size: 1.1em;">
@@ -34,12 +33,12 @@
         $shortText = substr($mdescription, 0, 100);
         ?>
 
-        <p id="shortText"><?php echo nl2br($shortText); ?>...</p>
+        <p id="shortText" class="card-text"><?php echo nl2br($shortText); ?>...</p>
         <p id="fullText" class="card-text" style="display: none;"><?php echo nl2br($mdescription); ?></p>
 
         <button id="readMoreBtn" class="btn btn-primary" style="margin-top: 10px;">Read more</button>
-        <a href="index.php?controller=User&action=showActiveProducts" class="btn btn-secondary"
-            style="margin-top: 10px;">
+
+        <a href="/PMS/user/showActiveProducts" class="btn btn-secondary" style="margin-top: 10px;">
             Back to Products
         </a>
     </div>

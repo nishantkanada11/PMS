@@ -3,11 +3,11 @@
 <h2 style="margin-left:100px">Add Product</h2>
 
 <nav style="display: flex; justify-content: right; align-items: center; gap: 10px;">
-    <a href="index.php?controller=User&action=logout" class="login-btn">Log Out</a>
-    <a href="index.php?controller=User&action=aindex" class="btn btn-secondary">Back</a>
+    <a href="/PMS/user/logout" class="login-btn">Log Out</a>
+    <a href="/PMS/user/aindex" class="btn btn-secondary">Back</a>
 </nav>
 
-<form method="POST" action="index.php?controller=User&action=saveProduct" enctype="multipart/form-data" id="create"
+<form method="POST" action="/PMS/user/saveProduct" enctype="multipart/form-data" id="create"
     style="max-width: 600px; margin: 40px auto;">
 
     <div class="form-group">

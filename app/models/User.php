@@ -90,12 +90,12 @@ class User
         return $stmt->execute();
     }
 
-    public function searchProducts($query, $brand = '')
+    public function searchProducts($query = '', $brand = '')
     {
-        $sql = "SELECT * FROM product WHERE (name LIKE ? OR description LIKE ? OR mdescription LIKE ?)";
+        $sql = "SELECT * FROM product WHERE (name LIKE ? OR description LIKE ? OR mdescription LIKE ? OR brand_name LIKE ? OR price LIKE ?) AND status = 'active'";
 
-        $params = ["%$query%", "%$query%", "%$query%"];
-        $types = "sss";
+        $params = ["%$query%", "%$query%", "%$query%", "%$query%", "%$query%"];
+        $types = "sssss";
 
         if (!empty($brand)) {
             $sql .= " AND brand_name = ?";
@@ -106,6 +106,7 @@ class User
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param($types, ...$params);
         $stmt->execute();
+
         return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
     }
 

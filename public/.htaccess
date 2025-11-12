@@ -1,13 +1,7 @@
-# Set index.php as default
-DirectoryIndex index.php
-
-# Enable URL rewriting
 RewriteEngine On
-RewriteBase /project/public/
+RewriteBase /PMS/
 
-# If the file or folder exists, serve it directly
+# Redirect all requests to index.php except existing files/folders
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-
-# Otherwise, send everything to index.php
-RewriteRule ^ index.php [L]
+RewriteRule ^(.*)$ index.php [QSA,L]

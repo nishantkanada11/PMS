@@ -1,11 +1,10 @@
 <?php include __DIR__ . '/../layouts/header.php'; ?>
 <h2 style="margin-left:100px">Edit Profile</h2>
 <nav style="display: flex; justify-content: right; align-items: center; gap: 10px;">
-    <!-- <a href="index.php?controller=User&action=logout" class="login-btn">Log Out</a> -->
-    <a href="index.php?controller=User&action=aindex" class="btn btn-secondary">Back</a>
+    <a href="/PMS/user/aindex" class="btn btn-secondary">Back</a>
 </nav>
 
-<form method="POST" action="index.php?controller=User&action=updateProfile" id="editProfile">
+<form method="POST" action="/PMS/user/updateProfile" id="editProfile">
     <div class="form-group">
         <label>Name</label>
         <input type="text" name="name" class="form-control" value="<?= htmlspecialchars($user['name'] ?? '') ?>"

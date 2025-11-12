@@ -29,7 +29,8 @@ class UserController
         $user = $this->userModel->findByEmail($email);
 
         if ($user && $password === $user['password']) {
-            header("Location: index.php?controller=User&action=aindex");
+            header("Location: /PMS/user/aindex");
+
             exit;
         } else {
             $error = "Invalid email or password.";
@@ -75,9 +76,9 @@ class UserController
         $updated = $this->userModel->updateProfileByEmail($email, $name, $mobile, $password ?: null);
 
         if ($updated) {
-            echo "<script>alert('Profile updated successfully!');window.location='index.php?controller=User&action=aindex';</script>";
+            echo "<script>alert('Profile updated successfully!');window.location='/PMS/user/aindex';</script>";
         } else {
-            echo "<script>alert('Failed to update profile.');window.location='index.php?controller=User&action=adit';</script>";
+            echo "<script>alert('Failed to update profile.');window.location='/PMS/user/adit';</script>";
         }
     }
     public function saveProduct()
@@ -127,12 +128,9 @@ class UserController
 
         $this->userModel->saveProduct($id, $name, $description, $price, $profilePicName, $mdescription, $brand_name, $brandLogoName);
 
-        header("Location: index.php?controller=User&action=aindex");
+        header("Location: /PMS/user/aindex");
         exit;
     }
-
-
-
 
     public function pcreate()
     {
@@ -167,7 +165,8 @@ class UserController
         }
         $deleted = $this->userModel->deleteProduct($id);
 
-        header("Location: index.php?controller=User&action=aindex&msg=deleted");
+        header("Location: /PMS/user/aindex?msg=deleted");
+
         exit;
 
     }
@@ -180,7 +179,7 @@ class UserController
         $products = $this->userModel->getPage($limit, $offset);
         $totalRecord = $this->userModel->getTotalCount();
         $totalPage = ceil($totalRecord / $limit);
-        
+
         $brands = $this->userModel->getAllBrandNames();
 
         require __DIR__ . '/../views/users/index.php';
@@ -234,7 +233,8 @@ class UserController
     public function logout()
     {
 
-        header("Location: index.php?controller=User&action=showActiveProducts");
+        header("Location: /PMS/user/showActiveProducts");
+
         exit;
     }
 

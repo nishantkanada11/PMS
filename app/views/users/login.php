@@ -9,7 +9,7 @@
             </div>
         <?php endif; ?>
 
-        <form method="POST" action="index.php?controller=User&action=authenticate">
+        <form method="POST" action="/PMS/user/authenticate">
             <label>Email:</label><br>
             <input type="email" name="email" required><br>
 
@@ -17,7 +17,8 @@
             <input type="password" name="password" required><br>
 
             <button type="submit">Login</button>
-            <a href="index.php?controller=User&action=showActiveProducts" class="btn btn-secondary">Back</a>
+
+            <a href="/PMS/user/showActiveProducts" class="btn btn-secondary">Back</a>
         </form>
     </div>
 </div>
